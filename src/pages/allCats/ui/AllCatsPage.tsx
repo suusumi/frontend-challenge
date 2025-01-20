@@ -1,31 +1,19 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import {fetchCats} from "../../../entities/cat/api/fetchCats";
+import React, {useEffect, useState} from "react";
 import {Box, CircularProgress, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {Cat} from "../../../entities/cat/model/types";
 import {CatCard} from "../../../entities/cat/ui/CatCard";
 import {getFavorites, saveFavorites, toggleFavorites} from "../../../entities/cat/model/favorites.ts";
+import {useLoadCats} from "../model/useLoadCats.ts";
+import {useObserver} from "../model/useObserver.ts";
 
 export const AllCatsPage: React.FC = () => {
-    const [cats, setCats] = useState<Cat[]>([]);
+    const {cats, loading, hasMore, loadCats} = useLoadCats();
     const [favorites, setFavorites] = useState<Cat[]>([]);
     const [page, setPage] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
-    const observerRef = useRef<HTMLDivElement | null>(null);
 
-    const loadCats = useCallback(async (currentPage: number) => {
-        try {
-            setLoading(true);
-            const newCats = await fetchCats(currentPage);
-            setCats((prevCats) => [...prevCats, ...newCats]);
-            setHasMore(newCats.length > 0);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    }, []);
+    const observerRef = useObserver(hasMore, loading,
+        () => setPage((prev) => prev + 1));
 
     useEffect(() => {
         loadCats(page);
@@ -40,30 +28,6 @@ export const AllCatsPage: React.FC = () => {
         setFavorites(updatedFavorites);
         saveFavorites(updatedFavorites);
     };
-
-    useEffect(() => {
-        if (!hasMore || loading) return;
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    setPage((prevPage) => {
-                        return loading ? prevPage : prevPage + 1;
-                    });
-                }
-            },
-            {threshold: 1.0}
-        );
-
-        if (observerRef.current) {
-            observer.observe(observerRef.current);
-        }
-
-        return () => {
-            if (observerRef.current) observer.unobserve(observerRef.current);
-        };
-    }, [hasMore, loading]);
-
 
     return (
         <Box>
