@@ -1,7 +1,7 @@
 import {HttpClient} from "../../../shared/api/httpClient/HttpClient.ts";
 import {Cat} from "../model/types.ts";
 
-export const fetchCats = async (page: number, limit: number = 10): Promise<Cat[]> => {
+export const fetchCats = async (page: number, limit: number = 20): Promise<Cat[]> => {
     const response = await HttpClient.get(`/images/search`, {
         params: {
             limit,
