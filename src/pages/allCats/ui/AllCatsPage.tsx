@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Box, CircularProgress, Typography} from "@mui/material";
+import {Box, CircularProgress, Container, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {Cat} from "../../../entities/cat/model/types";
 import {CatCard} from "../../../entities/cat/ui/CatCard";
@@ -30,7 +30,7 @@ export const AllCatsPage: React.FC = () => {
     };
 
     return (
-        <Box>
+        <Container maxWidth="lg">
             {!loading && cats.length === 0 && (
                 <Box sx={{textAlign: "center", marginTop: "20px"}}>
                     <Typography>Котики не найдены / Ошибка загрузки данных</Typography>
@@ -39,7 +39,7 @@ export const AllCatsPage: React.FC = () => {
 
             <Grid container spacing={2}>
                 {cats.map((cat) => (
-                    <Grid key={cat.id} size={{xs: 12, sm: 4, md: 2}}>
+                    <Grid key={cat.id} size={{xs: 12, sm: 4, md: 3}}>
                         <CatCard
                             cat={cat}
                             isFavorite={favorites.some((fav) => fav.id === cat.id)}
@@ -62,6 +62,6 @@ export const AllCatsPage: React.FC = () => {
             )}
 
             <div ref={observerRef} style={{height: "1px"}}/>
-        </Box>
+        </Container>
     );
 };

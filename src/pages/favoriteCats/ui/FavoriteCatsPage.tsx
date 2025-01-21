@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Box, CircularProgress, Typography} from "@mui/material";
+import {CircularProgress, Container, Typography} from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import {Cat} from "../../../entities/cat/model/types";
 import {CatCard} from "../../../entities/cat/ui/CatCard";
@@ -27,7 +27,7 @@ export const FavoriteCatsPage: React.FC = () => {
     };
 
     return (
-        <Box>
+        <Container maxWidth="lg">
             {loading ? (
                 <CircularProgress sx={{display: "block", margin: "20px auto"}}/>
             ) : favorites.length === 0 ? (
@@ -37,7 +37,7 @@ export const FavoriteCatsPage: React.FC = () => {
             ) : (
                 <Grid container spacing={2}>
                     {favorites.map((cat) => (
-                        <Grid key={cat.id} size={{xs: 12, sm: 4, md: 2}}>
+                        <Grid key={cat.id} size={{xs: 12, sm: 4, md: 3}}>
                             <CatCard
                                 cat={cat}
                                 isFavorite={true}
@@ -47,6 +47,6 @@ export const FavoriteCatsPage: React.FC = () => {
                     ))}
                 </Grid>
             )}
-        </Box>
+        </Container>
     );
 };
