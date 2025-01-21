@@ -74,22 +74,24 @@ export const CatCard: React.FC<CatCardProps> = ({cat, isFavorite, onToggleFavori
                     position: "absolute",
                     bottom: "10px",
                     right: "10px",
-                    opacity: isHovered ? 1 : 0,
+                    opacity: isHovered && imageLoaded ? 1 : 0,
                     transition: "opacity 0.3s ease-in-out",
                 }}
             >
-                <IconButton
-                    onClick={() => onToggleFavorite(cat.id)}
-                    sx={{
-                        color: "#FF3A00",
-                    }}
-                >
-                    {isFavorite ? (
-                        <FavoriteIcon sx={{fontSize: "40px"}}/>
-                    ) : (
-                        <FavoriteBorderIcon sx={{fontSize: "40px"}}/>
-                    )}
-                </IconButton>
+                {imageLoaded && (
+                    <IconButton
+                        onClick={() => onToggleFavorite(cat.id)}
+                        sx={{
+                            color: "#FF3A00"
+                        }}
+                    >
+                        {isFavorite ? (
+                            <FavoriteIcon sx={{fontSize: "40px"}}/>
+                        ) : (
+                            <FavoriteBorderIcon sx={{fontSize: "40px"}}/>
+                        )}
+                    </IconButton>
+                )}
             </CardActions>
         </Card>
     );
