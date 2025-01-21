@@ -1,9 +1,14 @@
 import React, {useState} from "react";
-import {IconButton, Card, CardMedia, CardActions} from "@mui/material";
+import {
+    IconButton,
+    Card,
+    CardMedia,
+    CardActions,
+    Skeleton
+} from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {Cat} from "../model/types.ts";
-
 
 interface CatCardProps {
     cat: Cat;
@@ -13,11 +18,12 @@ interface CatCardProps {
 
 export const CatCard: React.FC<CatCardProps> = ({cat, isFavorite, onToggleFavorite}) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState(false);
 
     return (
         <Card
             sx={{
-                width: {xs: '100%', sm: 200, md:200},
+                width: {xs: '100%', sm: 200, md: 200},
                 position: "relative",
                 overflow: "hidden",
                 borderRadius: "8px",
@@ -27,13 +33,24 @@ export const CatCard: React.FC<CatCardProps> = ({cat, isFavorite, onToggleFavori
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-
+            {!imageLoaded && (
+                <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height="200px"
+                    sx={{objectFit: "cover"}}
+                />
+            )}
             <CardMedia
                 component="img"
                 height="200"
                 image={cat.url}
                 alt="cat"
-                sx={{objectFit: "cover"}}
+                sx={{
+                    objectFit: "cover",
+                    display: imageLoaded ? "block" : "none"
+                }}
+                onLoad={() => setImageLoaded(true)}
             />
 
             <CardActions
