@@ -18,7 +18,7 @@ export const CatCard: React.FC<CatCardProps> = ({cat, isFavorite, onToggleFavori
     return (
         <Card
             sx={{
-                width: {xs: "100%", sm: 200, md: 200},
+                width: "100%",
                 position: "relative",
                 overflow: "hidden",
                 borderRadius: "8px",
@@ -48,7 +48,7 @@ export const CatCard: React.FC<CatCardProps> = ({cat, isFavorite, onToggleFavori
                         backgroundColor: "#c5c5c5",
                     }}
                 >
-                    <Typography sx={{fontSize:'14px'}}>
+                    <Typography sx={{fontSize: "14px"}}>
                         Ошибка загрузки
                     </Typography>
                 </Box>
@@ -84,7 +84,11 @@ export const CatCard: React.FC<CatCardProps> = ({cat, isFavorite, onToggleFavori
                         color: "#FF3A00",
                     }}
                 >
-                    {isFavorite ? <FavoriteIcon/> : <FavoriteBorderIcon/>}
+                    {isFavorite ? (
+                        <FavoriteIcon sx={{fontSize: "40px"}}/>
+                    ) : (
+                        <FavoriteBorderIcon sx={{fontSize: "40px"}}/>
+                    )}
                 </IconButton>
             </CardActions>
         </Card>
