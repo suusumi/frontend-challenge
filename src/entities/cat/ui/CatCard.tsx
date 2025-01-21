@@ -1,11 +1,5 @@
 import React, {useState} from "react";
-import {
-    IconButton,
-    Card,
-    CardMedia,
-    CardActions,
-    Skeleton
-} from "@mui/material";
+import {IconButton, Card, CardMedia, CardActions, Skeleton, Box, Typography} from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {Cat} from "../model/types.ts";
@@ -19,11 +13,12 @@ interface CatCardProps {
 export const CatCard: React.FC<CatCardProps> = ({cat, isFavorite, onToggleFavorite}) => {
     const [isHovered, setIsHovered] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageError, setImageError] = useState(false);
 
     return (
         <Card
             sx={{
-                width: {xs: '100%', sm: 200, md: 200},
+                width: {xs: "100%", sm: 200, md: 200},
                 position: "relative",
                 overflow: "hidden",
                 borderRadius: "8px",
@@ -33,7 +28,7 @@ export const CatCard: React.FC<CatCardProps> = ({cat, isFavorite, onToggleFavori
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            {!imageLoaded && (
+            {!imageLoaded && !imageError && (
                 <Skeleton
                     variant="rectangular"
                     width="100%"
@@ -41,17 +36,38 @@ export const CatCard: React.FC<CatCardProps> = ({cat, isFavorite, onToggleFavori
                     sx={{objectFit: "cover"}}
                 />
             )}
-            <CardMedia
-                component="img"
-                height="200"
-                image={cat.url}
-                alt="cat"
-                sx={{
-                    objectFit: "cover",
-                    display: imageLoaded ? "block" : "none"
-                }}
-                onLoad={() => setImageLoaded(true)}
-            />
+
+            {imageError && (
+                <Box
+                    sx={{
+                        width: "100%",
+                        height: "200px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "#c5c5c5",
+                    }}
+                >
+                    <Typography sx={{fontSize:'14px'}}>
+                        Ошибка загрузки
+                    </Typography>
+                </Box>
+            )}
+
+            {!imageError && (
+                <CardMedia
+                    component="img"
+                    height="200"
+                    image={cat.url}
+                    alt="cat"
+                    onLoad={() => setImageLoaded(true)}
+                    onError={() => setImageError(true)}
+                    sx={{
+                        objectFit: "cover",
+                        display: imageLoaded ? "block" : "none",
+                    }}
+                />
+            )}
 
             <CardActions
                 sx={{
